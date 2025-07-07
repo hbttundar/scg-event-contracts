@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package users.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/your-org/scg-event-contracts/gen/go/users/v1;userv1";
+
+// UserRegistered is published when a new user account is created under a tenant.
+// Consumers like the projection-service will use this to create a user record in the read model.
+// The notification-service might use this to trigger a welcome email.
+message UserRegistered {
+  string event_id = 1;
+  google.protobuf.Timestamp occurred_at = 2;
+
+  // The ID of the newly created user.
+  string user_id = 3;
+
+  // The tenant this user belongs to, for context.
+  string tenant_id = 4;
+
+  // The initial data for the user.
+  string email = 5;
+  string full_name = 6;
+}
+
+// UserLoggedIn is an example of an audit event. It records the fact that a user
+// successfully authenticated. The projection-service can use this to update the
+// user's `last_login_at` field in the read database.
+message UserLoggedIn {
+  string event_id = 1;
+  google.protobuf.Timestamp occurred_at = 2;
+  string user_id = 3;
+  string tenant_id = 4;
+}

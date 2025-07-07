@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package tenants.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/your-org/scg-event-contracts/gen/go/tenants/v1;tenantsv1";
+
+// TenantRegistered is published when a new company is successfully onboarded.
+// This is the fact that results from a successful CreateTenant command.
+message TenantRegistered {
+  // A unique identifier for this specific event instance (UUID).
+  // Essential for tracing and idempotency.
+  string event_id = 1;
+
+  // The timestamp of when the event occurred, set by the server.
+  google.protobuf.Timestamp occurred_at = 2;
+
+  // The primary identifier for the tenant that was created.
+  string tenant_id = 3;
+
+  // The initial data for the tenant.
+  string company_name = 4;
+}
+
+// TenantDeleted is published when a tenant is soft-deleted.
+message TenantDeleted {
+  string event_id = 1;
+  google.protobuf.Timestamp occurred_at = 2;
+  string tenant_id = 3;
+}
